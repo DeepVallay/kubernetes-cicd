@@ -39,7 +39,7 @@ jobs:
           git config --global user.name "${{ secrets.KUBERNETES_GITHUBUSER }}"
           git clone https://github.com/${{ secrets.KUBERNETES_GITHUBUSER }}/kubernetes-deploy.git
 
-          cd kubernetes-deploy
+          cd kubernetes-deploy/deploy
           git checkout -b update-docker-image-${{ steps.date.outputs.DATE }}
           yq e '.spec.template.spec.containers[0].image = "${{ secrets.KUBERNETES_DOCKERHUB_USERNAME }}/kubernetes-cicd:${{ steps.date.outputs.DATE }}"' -i deployment.yaml
           git add deployment.yaml
