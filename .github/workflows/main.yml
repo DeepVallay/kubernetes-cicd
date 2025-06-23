@@ -12,6 +12,9 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - name: Run Hadolint
+        run: docker run --rm -i hadolint/hadolint < Dockerfile
+
       - name: Set date as tag
         id: date
         run: echo "::set-output name=DATE::$(TZ=Asia/Tokyo date +'%Y%m%d%H%M')"
