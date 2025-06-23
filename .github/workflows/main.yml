@@ -17,7 +17,7 @@ jobs:
 
       - name: Set date as tag
         id: date
-        run: echo "::set-output name=DATE::$(TZ=Asia/Tokyo date +'%Y%m%d%H%M')"
+        run: echo "DATE=$(TZ=Asia/Tokyo date +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2.0.0
@@ -30,6 +30,7 @@ jobs:
         with:
           context: .
           push: true
+          tags: ${{ secrets.KUBERNETES_DOCKERHUB_USERNAME }}/kubernetes-cicd:${{ steps.date.outputs.DATE }}
 
       - name: Change image
         run: |
@@ -46,10 +47,10 @@ jobs:
 
       - name: Create pull request
         run: |
-         gh pr create \
-          --base main \
-          --head update-docker-image-${{ steps.date.outputs.DATE }} \
-          --title "Update Docker image" \
-          --body "Update Docker image to ${{ steps.date.outputs.DATE }}"
+          gh pr create \
+            --base main \
+            --head update-docker-image-${{ steps.date.outputs.DATE }} \
+            --title "Update Docker image" \
+            --body "Update Docker image to ${{ steps.date.outputs.DATE }}"
         env:
           GH_TOKEN: ${{ secrets.KUBERNETES_GITHUBTOKEN }}
