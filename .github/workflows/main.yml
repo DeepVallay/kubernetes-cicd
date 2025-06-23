@@ -46,6 +46,7 @@ jobs:
           git commit -m "Update Docker image to ${{ steps.date.outputs.DATE }}"
           git push origin update-docker-image-${{ steps.date.outputs.DATE }}
 
+          # Create a pull request using ghcommand
           gh pr create --base main --head update-docker-image-${{ steps.date.outputs.DATE }} --title "Update Docker image" --body "Update Docker image to ${{ steps.date.outputs.DATE }}"
         env:
           GH_TOKEN: ${{ secrets.KUBERNETES_GITHUBTOKEN }}
